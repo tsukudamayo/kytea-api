@@ -28,6 +28,10 @@ app.config['JSON_AS_ASCII'] = False
 app.config['JOSN_SORT_KEYS'] = False
 
 
+@app.route('/')
+def hello():
+    return 'Hello'
+
 @app.route('/ner', methods=['POST'])
 def ner_by_kytea():
     data = request.get_data()
