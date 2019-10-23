@@ -17,6 +17,7 @@ WORKDIR kytea-0.4.7
 
 RUN ./configure \
     && make \
-    && make install
+    && make install \
+    && ldconfig
 
 CMD ["kytea", "--help"]
