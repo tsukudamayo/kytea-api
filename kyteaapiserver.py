@@ -8,10 +8,15 @@ import nerpreprocess as ner
 import compute_recipetime as cr
 import count_ingredients as ci
 
+if os.name == 'nt':
+    _KBM_MODEL = 'kytea-win-0.4.2/model/jp-0.4.7-1.mod'
+    _KNM_MODEL = 'kytea-win-0.4.2/RecipeNE-sample/recipe416.knm'
+    _KYTEA_PATH = 'kytea-win-0.4.2/kytea.exe'
+else:
+    _KBM_MODEL = 'kytea-0.4.7/model/jp-0.4.7-1.mod'
+    _KNM_MODEL = 'kytea-0.4.7/RecipeNE-sample/recipe416.knm'
+    _KYTEA_PATH = 'kytea'
 
-_KBM_MODEL = 'kytea-win-0.4.2/model/jp-0.4.7-1.mod'
-_KNM_MODEL = 'kytea-win-0.4.2/RecipeNE-sample/recipe416.knm'
-_KYTEA_PATH = 'kytea-win-0.4.2/kytea.exe'
 _TIME_PARAMS = './action_time/orangepage/action_time.json'
 _ACTIONS_CATEGORY_DIR = './action_category/orangepage'
 _REFERENCE_DIR = './num_of_params'
