@@ -11,10 +11,12 @@ RUN git clone https://github.com/tsukudamayo/dotfiles.git \
     && cp -r ./dotfiles/.fonts ~/
 
 RUN wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
-    && tar xzf kytea-0.4.7.tar.gz \
-    && cd kytea-0.4.7 \
-    && ./configure \
+    && tar xzf kytea-0.4.7.tar.gz
+
+WORKDIR kytea-0.4.7
+
+RUN ./configure \
     && make \
     && make install
 
-CMD ["/bin/bash"]
+CMD ["kytea", "--help"]
