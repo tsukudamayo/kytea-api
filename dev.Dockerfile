@@ -4,7 +4,7 @@ RUN mkdir -p /kytea/app
 WORKDIR /kytea/app
 
 COPY . .
-RUN apt-get update && \
+RUN apt-get update \
     && apt-get -y install emacs \
     && git clone https://github.com/tsukudamayo/dotfiles.git -b develop \
     && cp -r ~/dotfiles/linux/.emacs.d ~/ \
