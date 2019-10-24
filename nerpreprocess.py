@@ -119,7 +119,7 @@ class Finalizer:
         return output_list
 
 
-def parse_recipe(text:str, model_path: str, kytea_path: str) -> str:
+def parse_recipe(text: str, model_path: str, kytea_path: str) -> str:
     print('input text')
     cmd_echo = subprocess.Popen(
         ['echo', text],

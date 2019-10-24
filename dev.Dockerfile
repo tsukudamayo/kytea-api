@@ -1,15 +1,15 @@
 FROM python:3.6.9-buster
 
-RUN mkdir -p /kytea/app
-WORKDIR /kytea/app
+RUN mkdir -p /kytea/app && mkdir -p /kytea/model
 
 COPY . .
 RUN apt-get update \
-    && apt-get -y install emacs
-RUN git clone https://github.com/tsukudamayo/dotfiles.git \
+    && apt-get -y install emacs \
+    && git clone https://github.com/tsukudamayo/dotfiles.git \
     && cp -r ./dotfiles/linux/.emacs.d ~/ \
     && cp -r ./dotfiles/.fonts ~/
 
+WORKDIR /kytea/app
 RUN wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
 
@@ -19,9 +19,7 @@ RUN ./configure \
     && make \
     && make install \
     && ldconfig \
-    && mkdir model
 
-WORKDIR model
 RUN wget http://www.phontron.com/kytea/download/model/jp-0.4.7-1.mod.gz \
     && gzip -d jp-0.4.7-1.mod.gz \
     && wget http://www.ar.media.kyoto-u.ac.jp/mori/research/topics/NER/2014-05-28-RecipeNE-sample.tar.gz \
