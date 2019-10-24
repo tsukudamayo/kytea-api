@@ -1,7 +1,7 @@
 FROM python:3.6.9-buster
 
 RUN mkdir -p /kytea/app
-
+WORKDIR /kytea/app
 COPY . .
 RUN apt-get update \
     && apt-get -y install emacs \
@@ -9,7 +9,6 @@ RUN apt-get update \
     && cp -r ./dotfiles/linux/.emacs.d ~/ \
     && cp -r ./dotfiles/.fonts ~/
 
-WORKDIR /kytea/app
 RUN pip install -r requirements.txt \
     && wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
