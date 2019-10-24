@@ -18,7 +18,7 @@ WORKDIR kytea-0.4.7
 RUN ./configure \
     && make \
     && make install \
-    && ldconfig \
+    && ldconfig
 
 RUN mkdir -p model
 
