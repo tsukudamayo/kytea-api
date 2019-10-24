@@ -10,7 +10,8 @@ RUN apt-get update \
     && cp -r ./dotfiles/.fonts ~/
 
 WORKDIR /kytea/app
-RUN wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
+RUN pip install -r requirements.txt \
+    && wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
 
 WORKDIR kytea-0.4.7
@@ -29,7 +30,6 @@ RUN wget http://www.phontron.com/kytea/download/model/jp-0.4.7-1.mod.gz \
     && tar xvf 2014-05-28-RecipeNE-sample.tar.gz
 
 WORKDIR /kytea/app
-RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
