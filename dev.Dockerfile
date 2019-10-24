@@ -20,13 +20,14 @@ RUN ./configure \
     && make install \
     && ldconfig
 
+RUN wget http://www.ar.media.kyoto-u.ac.jp/mori/research/topics/NER/2014-05-28-RecipeNE-sample.tar.gz \
+    && tar xvf 2014-05-28-RecipeNE-sample.tar.gz
+
 RUN mkdir -p model
 
 WORKDIR model
 RUN wget http://www.phontron.com/kytea/download/model/jp-0.4.7-1.mod.gz \
-    && gzip -d jp-0.4.7-1.mod.gz \
-    && wget http://www.ar.media.kyoto-u.ac.jp/mori/research/topics/NER/2014-05-28-RecipeNE-sample.tar.gz \
-    && tar xvf 2014-05-28-RecipeNE-sample.tar.gz
+    && gzip -d jp-0.4.7-1.mod.gz
 
 WORKDIR /kytea/app
 
