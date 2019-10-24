@@ -23,7 +23,7 @@ _REFERENCE_DIR = './num_of_params'
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r'/*': {'origins': '*'}})
 app.config['JSON_AS_ASCII'] = False
 app.config['JOSN_SORT_KEYS'] = False
 
