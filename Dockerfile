@@ -1,12 +1,10 @@
-FROM python:3.6.9-slim-buster
+FROM python:3.6.9-buster
 
 RUN mkdir -p /kytea/app
 WORKDIR /kytea/app
 COPY . .
 
 RUN pip install -r requirements.txt \
-    && apt-get update \
-    && apt-get install -y wget \
     && wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
 
