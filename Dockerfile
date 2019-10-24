@@ -5,6 +5,8 @@ WORKDIR /kytea/app
 COPY . .
 
 RUN pip install -r requirements.txt \
+    && apt-get update \
+    && apt-get install -y wget \
     && wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
 
