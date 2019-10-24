@@ -1,4 +1,4 @@
-FROM python:3.6.9-buster
+FROM python:3.6.9-alpine3.10
 
 RUN mkdir -p /kytea/app
 WORKDIR /kytea/app
