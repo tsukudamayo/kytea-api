@@ -85,6 +85,7 @@ def eval_recipe_time():
         'time': expected_time
     })
 
+
 @app.route('/level', methods=['POST'])
 def eval_recipe_level():
     title_dict = {'key': 'レシピ名'}
@@ -157,13 +158,12 @@ def eval_recipe_level():
     print('5', axis5_dict_std)
 
     recipe_level = [
-                    { "key": "食材", "target": axis1_dict_std, "mean": 1.954192546583851 },
-                    { "key": "文字数", "target": axis2_dict_std, "mean": 1.3047501045924113 },
-                    { "key": "加熱", "target": axis3_dict_std, "mean": 0.8819875776397513 },
-                    { "key": "混ぜる", "target": axis4_dict_std, "mean": 1.6247139588100672 },
-                    { "key": "切る", "target": axis5_dict_std, "mean": 1.2644188110026617 }
-    ];
-
+                    {"key": "食材", "target": axis1_dict_std, "mean": 1.954192546583851 },
+                    {"key": "文字数", "target": axis2_dict_std, "mean": 1.3047501045924113 },
+                    {"key": "加熱", "target": axis3_dict_std, "mean": 0.8819875776397513 },
+                    {"key": "混ぜる", "target": axis4_dict_std, "mean": 1.6247139588100672 },
+                    {"key": "切る", "target": axis5_dict_std, "mean": 1.2644188110026617 }
+    ]
 
     return jsonify({
         'status': 'OK',
@@ -172,4 +172,4 @@ def eval_recipe_level():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)
