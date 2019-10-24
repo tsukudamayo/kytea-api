@@ -1,6 +1,6 @@
 FROM python:3.6.9-buster
 
-RUN mkdir -p /kytea/app && mkdir -p /kytea/model
+RUN mkdir -p /kytea/app
 
 COPY . .
 RUN apt-get update \
@@ -20,6 +20,9 @@ RUN ./configure \
     && make install \
     && ldconfig \
 
+RUN mkdir -p model
+
+WORKDIR model
 RUN wget http://www.phontron.com/kytea/download/model/jp-0.4.7-1.mod.gz \
     && gzip -d jp-0.4.7-1.mod.gz \
     && wget http://www.ar.media.kyoto-u.ac.jp/mori/research/topics/NER/2014-05-28-RecipeNE-sample.tar.gz \
