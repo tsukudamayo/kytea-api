@@ -67,7 +67,10 @@ class Finalizer:
             print(output_list)
 
             for word in output_list:
-                observe_word = word.split('/')[0]
+                if word != '/':
+                    observe_word = word.split('/')[0]
+                elif word == '/':
+                    observe_word = '/'
                 observe_word = observe_word.replace('=', '')
                 lf_observer += observe_word
                 if lf_observer == lf_map[lf_map_num] and is_lf is False:
@@ -106,8 +109,11 @@ class Finalizer:
         output_list = []
         for m_item, ner_item in zip(morphology_list, ner_list):
             m_item = m_item.split('/')
-            if '/' in ner_item:
+            if '/' in ner_item and ner_item != '/':
                 ner_item = ner_item.split('/')
+            elif '/' in ner_item and ner_item == '/':
+                ner_item = ['/', '']
+                m_item = ['/', '']
             else:
                 ner_item = [ner_item, '']
             if m_item[0] != ner_item[0]:
@@ -118,8 +124,10 @@ class Finalizer:
                 print('ner_item')
                 print(ner_item[0])
                 sys.exit()
-            if ner_item[1] == '':
+            if ner_item[0] != '/' and ner_item[1] == '':
                 output_list.append(','.join(m_item))
+            elif ner_item[0] == '/' and ner_item[1] == '':
+                output_list.append('/')
             else:
                 output_list.append(','.join(m_item) + '/' + ner_item[1])
         print('output_list')
