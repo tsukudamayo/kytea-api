@@ -34,7 +34,7 @@ def hello():
 
 @app.route('/ner', methods=['POST'])
 def ner_by_kytea():
-    data = request.get_data
+    data = request.get_data()
     print('data1 : ', data)
     data = data.decode('utf-8')
     print('data2 : ', data)
