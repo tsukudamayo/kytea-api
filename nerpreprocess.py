@@ -11,20 +11,23 @@ _KYTEA_PATH = 'kytea-win-0.4.2/kytea.exe'
 
 
 class Finalizer:
-    def __init__(self, wakati, ner):
+    def __init__(self, wakati, ner, org):
         super(Finalizer, self).__init__()
         self.wakati = wakati
         self.ner = ner
         self.m_lists = []
         self.ner_lists = []
+        self.org = org
 
     def result_output(self):
         result = ''
         m_lists_sublist = []
+        
         for line in self.wakati.split('\n'):
             print('line1')
             print(line)
-            line = line.replace('\n', '').split(' ')
+            line = line.split(' ')
+            # line = line.replace('\n', '').split(' ')
             line = [n for n in line if n]   # delete empty character
             print('line2w')
             print(line)
@@ -33,11 +36,23 @@ class Finalizer:
         self.m_lists.append(m_lists_sublist)
 
         for line in self.ner.split('\n'):
-            line = line.replace('\n', '').split(' ')
+            line = line.split(' ')
+            # line = line.replace('\n', '').split(' ')
             print('line2r')
             print(line)
             self.ner_lists.append(self.modify_viob(line))
         print(self.ner_lists)
+
+        ref_lf_strings = self.org.split('\n')
+        print('ref_lf_strings')
+        print(ref_lf_strings)
+        lf_map = {idx: value for idx, value in enumerate(ref_lf_strings)}
+        print('lf_map')
+        print(lf_map)
+
+        lf_map_num = 0
+        lf_observer = ''
+        is_lf = False
 
         for m_list, ner_list in zip(self.m_lists, self.ner_lists):
             print('restore/m_list')
@@ -50,7 +65,27 @@ class Finalizer:
             output_list = self.join_words(restored_list)
             print('output_list')
             print(output_list)
-            result += ' '.join(output_list) + '\n'
+
+            for word in output_list:
+                observe_word = word.split('/')[0]
+                observe_word = observe_word.replace('=', '')
+                lf_observer += observe_word
+                if lf_observer == lf_map[lf_map_num] and is_lf is False:
+                    is_lf = True
+                if is_lf is True and word == '。':
+                    word = '。\n'
+                    word += ' '
+                    is_lf = False
+                    lf_observer = ''
+                    lf_map_num += 1
+                    result += word
+                    continue
+                else:
+                    pass
+                result += word
+                result += ' '
+            result += '\n'
+            # result += ' '.join(output_list) + '\n'
 
         return result
 

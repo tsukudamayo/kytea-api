@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
 import os
@@ -22,7 +22,7 @@ _ACTIONS_CATEGORY_DIR = './action_category/orangepage'
 _REFERENCE_DIR = './num_of_params'
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./build/static', template_folder='./build')
 CORS(app, resources={r'/*': {'origins': '*'}})
 app.config['JSON_AS_ASCII'] = False
 app.config['JOSN_SORT_KEYS'] = False
@@ -30,7 +30,7 @@ app.config['JOSN_SORT_KEYS'] = False
 
 @app.route('/')
 def hello():
-    return 'Hello'
+    return render_template('index.html')
 
 @app.route('/ner', methods=['POST'])
 def ner_by_kytea():
@@ -50,8 +50,15 @@ def ner_by_kytea():
     finalize = ner.Finalizer(
         wakati,
         ner_result,
+        data
     )
     result = finalize.result_output()
+    print('morphology', morphology)
+    print('wakati', wakati)
+    print('score', score)
+    print('ner_result', ner_result)
+    print('data', data)
+    print('result', result)
 
     return jsonify({
         'status': 'OK',
