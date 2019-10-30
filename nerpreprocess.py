@@ -174,7 +174,7 @@ def insert_space_between_words(text: str) -> str:
     if len(text) == 1:
         pass
     else:
-        text = text.split('\n', ' ')
+        text = text.replace('\n', ' ')
         words = [w.split('/')[0] if w.count('/') <= 2 else '/' for w in text.split(' ')]
         output = ' '.join(words) + '\n'
 
