@@ -166,7 +166,6 @@ def parse_recipe(text: str, model_path: str, kytea_path: str) -> str:
         stdout=subprocess.PIPE,
     )
     end_of_pipe = cmd_kytea.communicate()[0].decode('utf-8')
-    end_of_pipe = end_of_pipe.replace('\n', '')
 
     return end_of_pipe
 
@@ -175,7 +174,6 @@ def insert_space_between_words(text: str) -> str:
     if len(text) == 1:
         pass
     else:
-        # text = text.replace('\n', '')
         words = [w.split('/')[0] if w.count('/') <= 2 else '/' for w in text.split(' ')]
         output = ' '.join(words) + '\n'
 
