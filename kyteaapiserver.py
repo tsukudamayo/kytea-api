@@ -30,7 +30,8 @@ app.config['JOSN_SORT_KEYS'] = False
 
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    # return render_template('index.html')
+    return 'hello'
 
 @app.route('/ner', methods=['POST'])
 def ner_by_kytea():
