@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
+from flask_httpauth import HTTPBasicAuth
 
 import os
 import json
@@ -23,24 +24,33 @@ _REFERENCE_DIR = './num_of_params'
 
 
 app = Flask(__name__, static_folder='./build/static', template_folder='./build')
+auth = HTTPBasicAuth()
+users = {
+    'panasonic': 'panasonic'
+}
 CORS(app, resources={r'/*': {'origins': '*'}})
-app.config['JSON_AS_ASCII'] = False
+app.config['JSON_AS_ASII'] = False
 app.config['JOSN_SORT_KEYS'] = False
 
 
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
+
+
 @app.route('/')
+@auth.login_required
 def hello():
-    # return render_template('index.html')
-    return 'hello'
+    return render_template('index.html')
+    # return 'hello'
 
 @app.route('/ner', methods=['POST'])
 def ner_by_kytea():
     data = request.get_data()
-    print('data1 : ', data)
     data = data.decode('utf-8')
-    print('data2 : ', data)
     data = json.loads(data)
-    print('data3 : ', data)
     data = data['data']
     print(data)
     print(type(data))
@@ -71,26 +81,29 @@ def ner_by_kytea():
 @app.route('/time', methods=['POST'])
 def eval_recipe_time():
     data = request.get_data()
-    print('data1 : ', data)
     data = data.decode('utf-8')
-    print('data2 : ', data)
     data = json.loads(data)
-    print('data3 : ', data)
     data = data['data']
     print(data)
     print(type(data))
     action_words = cr.extract_actionword(data)
+    compute_string_time = cr.eval_time_strings(data)
     time_params = cr.fetch_timeparams(_TIME_PARAMS)
     print(action_words)
     print(cr.summation_time(action_words, time_params))
     print(cr.debug_params(action_words, time_params))
-    action_time_dict = cr.debug_params(action_words, time_params)
-    expected_time = cr.summation_time(action_words, time_params)
+    count_action = cr.count_actionword(data, action_words)
+    action_time = cr.summation_time(action_words, time_params)
+    expected_time = action_time + compute_string_time
+    time_params_array = [{'action': k, 'time': v} for k, v in time_params.items()]
 
     return jsonify({
         'status': 'OK',
-        'data': [action_time_dict],
-        'time': expected_time
+        'count': count_action,
+        'time': expected_time,
+        'recipetime': compute_string_time,
+        'actiontime': action_time,
+        'params': time_params_array
     })
 
 
@@ -106,11 +119,8 @@ def eval_recipe_level():
     level_dict = {'key': 'レベル'}
 
     data = request.get_data()
-    print('data1 : ', data)
     data = data.decode('utf-8')
-    print('data2 : ', data)
     data = json.loads(data)
-    print('data3 : ', data)
     ingredients = data['data'][0]
     print(ingredients)
     print(type(ingredients))

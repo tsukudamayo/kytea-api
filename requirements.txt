@@ -1,5 +1,6 @@
 flask
 flask-cors
+flask-httpauth
 numpy
 pytest
 pytest-watch
