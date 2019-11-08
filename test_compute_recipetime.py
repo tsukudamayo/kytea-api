@@ -68,7 +68,29 @@ def test_eval_time_strings():
     test_strings = open(test_data, 'r', encoding='utf-8').read()
     print('test_strings : ', test_strings)
 
-    expected = [40]
+    expected = 40
+    result = eval_time_strings(test_strings)
+
+    assert result == expected
+
+
+def test_eval_time_strings_detail_115975():
+    test_data = './test_data/detail_115975_recipe_time_test.txt'
+    test_strings = open(test_data, 'r', encoding='utf-8').read()
+    print('test_strings : ', test_strings)
+
+    expected = 10
+    result = eval_time_strings(test_strings)
+
+    assert result == expected
+
+
+def test_eval_time_strings_detail_135917():
+    test_data = './test_data/detail_135917_recipe_time_test.txt'
+    test_strings = open(test_data, 'r', encoding='utf-8').read()
+    print('test_strings : ', test_strings)
+
+    expected = 43
     result = eval_time_strings(test_strings)
 
     assert result == expected

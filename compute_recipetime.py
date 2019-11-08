@@ -63,9 +63,10 @@ def fetch_timeparams(target_file: str) -> dict:
 def eval_time_strings(ner_str: str) -> List:
     time_strings = []
     split_strings = ner_str.split(' ')
+    delete_tag_array = [split_tag(n) for n in split_strings]
     decimal_flg = False
     tmp_word = ''
-    for w in split_strings:
+    for w in delete_tag_array:
         if w.isdecimal() and decimal_flg is False:
             decimal_flg = True
             tmp_word += w
