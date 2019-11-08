@@ -52,6 +52,7 @@ def ner_by_kytea():
     data = data.decode('utf-8')
     data = json.loads(data)
     data = data['data']
+    data = data.replace(' ', '')
     print(data)
     print(type(data))
     morphology = ner.parse_recipe(data, _KBM_MODEL, _KYTEA_PATH)
