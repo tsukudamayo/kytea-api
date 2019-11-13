@@ -64,7 +64,7 @@ def test_summation_time():
 
 
 def test_eval_time_strings():
-    test_data = './test_data/detail_121930_recipe_time_test.txt'
+    test_data = './test_data/detail_121930_recipe_wakati_time_test.txt'
     test_strings = open(test_data, 'r', encoding='utf-8').read()
     print('test_strings : ', test_strings)
 
@@ -75,7 +75,7 @@ def test_eval_time_strings():
 
 
 def test_eval_time_strings_detail_115975():
-    test_data = './test_data/detail_115975_recipe_time_test.txt'
+    test_data = './test_data/detail_115975_recipe_wakati_time_test.txt'
     test_strings = open(test_data, 'r', encoding='utf-8').read()
     print('test_strings : ', test_strings)
 
@@ -86,7 +86,7 @@ def test_eval_time_strings_detail_115975():
 
 
 def test_eval_time_strings_detail_135917():
-    test_data = './test_data/detail_135917_recipe_time_test.txt'
+    test_data = './test_data/detail_135917_recipe_wakati_time_test.txt'
     test_strings = open(test_data, 'r', encoding='utf-8').read()
     print('test_strings : ', test_strings)
 

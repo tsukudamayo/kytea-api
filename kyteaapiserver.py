@@ -84,16 +84,19 @@ def eval_recipe_time():
     data = request.get_data()
     data = data.decode('utf-8')
     data = json.loads(data)
-    data = data['data']
-    print(data)
-    print(type(data))
-    action_words = cr.extract_actionword(data)
-    compute_string_time = cr.eval_time_strings(data)
+    ner = data['data'][0]
+    wakati = data['data'][1]
+    print(ner)
+    print(type(ner))
+    print(wakati)
+    print(type(wakati))
+    action_words = cr.extract_actionword(ner)
+    compute_string_time = cr.eval_time_strings(wakati)
     time_params = cr.fetch_timeparams(_TIME_PARAMS)
     print(action_words)
     print(cr.summation_time(action_words, time_params))
     print(cr.debug_params(action_words, time_params))
-    count_action = cr.count_actionword(data, action_words)
+    count_action = cr.count_actionword(ner, action_words)
     action_time = cr.summation_time(action_words, time_params)
     expected_time = action_time + compute_string_time
     time_params_array = [{'action': k, 'time': v} for k, v in time_params.items()]
@@ -104,7 +107,7 @@ def eval_recipe_time():
         'time': expected_time,
         'recipetime': compute_string_time,
         'actiontime': action_time,
-        'params': time_params_array
+        'params': time_params_array,
     })
 
 
@@ -188,6 +191,43 @@ def eval_recipe_level():
         'status': 'OK',
         'data': recipe_level,
     })
+
+
+@app.route('/read', methods=['POST'])
+def read_json():
+    input_dir = './build/dest'
+    input_file = 'test.json'
+    input_path = os.path.join(input_dir, input_file)
+
+    with open(input_path, 'r', encoding='utf-8') as r:
+        data = json.load(r)
+    print(data)
+    print(type(data))
+
+    return jsonify({
+        'status': 'OK',
+        'data': data,
+    })
+
+
+@app.route('/output', methods=['POST'])
+def output_json():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
+    output_dir = './build/dest'
+    output_file = 'test.json'
+    if os.path.exists(output_dir) is False:
+        os.makedirs(output_dir)
+    output_path = os.path.join(output_dir, output_file)
+    with open(output_path, 'w', encoding='utf-8') as w:
+        json.dump(data, w, indent=4, ensure_ascii=False)
+
+    return jsonify({'status': 'OK'})
 
 
 if __name__ == '__main__':
