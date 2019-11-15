@@ -1,0 +1,9 @@
+{
+    "method": "POST",
+    "data": "ぶり/F は 一切れ/F を 3/Sf 等分 に する/Ac 。 大根/F は 厚/Sf さ 2/Sf cm の 輪切り/Sf に し/Ac 、 やや 厚め に 皮/F を む/Ac い て 、 半分/Sf に 切/Ac る 。\nボール/T に 氷水/F を 用意/Ac し て お く 。 鍋/T に たっぷり/Q の 湯/F を 沸か/Ac し 、 酒/F 少々/Q を 入れ/Ac る 。 ぶり/F を 加え/Ac て 、 表面/F が 白/Sf く な/Af る 程度 に 、 さっと 湯通し/Ac し 、 すぐ に 氷水/T に と/Ac る 。\n鍋/T を ざっ と 洗/Ac い 、 大根/F と かぶ/Q る くらい の 水/F を 入れ/Ac る 。 中火/T に かけ/Ac 、 大根/F に 竹串/T が すーっと 通/Af る まで ゆで/Ac る 。 ぶり/F を 戻し入れ/Ac 、 酒/F 大さじ/Q 5 、 砂糖/F 大さじ/Q 4/F を 入れ/Ac る 。 落としぶた/Sf を し/Ac て 弱火/T で 、 7/D 分/Sf くらい 煮/Ac る 。 しょうゆ/F 大さじ/Q 3 、 みりん/F 大さじ/Q 1/F を 加え/Ac 、 煮汁/F が 少し 残/Af る 程度 まで 、 さらに 3/D 分/Sf くらい 煮つめ/Ac る 。",
+    "headers": {
+        "Content-Types": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    }
+}
+

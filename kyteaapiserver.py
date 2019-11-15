@@ -5,9 +5,13 @@ from flask_httpauth import HTTPBasicAuth
 import os
 import json
 
+import pandas as pd
+
 import nerpreprocess as ner
 import compute_recipetime as cr
 import count_ingredients as ci
+import kyteagraph as ky
+
 
 if os.name == 'nt':
     _KBM_MODEL = 'kytea-win-0.4.2/model/jp-0.4.7-1.mod'
@@ -228,6 +232,102 @@ def output_json():
         json.dump(data, w, indent=4, ensure_ascii=False)
 
     return jsonify({'status': 'OK'})
+
+
+@app.route('/flowgraph', methods=['POST'])
+def flowgraph():
+    data_dir = './graph_data'
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
+    # -----------------
+    # output flowgraph
+    # -----------------
+    # likelifood data config
+    index = [0, 2, 4, 5, 8]
+    index_list = pd.DataFrame({
+        'index': index,
+    })
+    likelihood_csv = os.path.join(data_dir, 'likelihood.csv')
+    likelihood = ky.load_likelihood(likelihood_csv, index_list)
+
+    rne_map = os.path.join(data_dir, 'rne_category.txt')
+
+    print('**************** rne_to_num_map ****************')
+    rne_to_num_map = ky.rne_to_num(rne_map)
+    print(rne_to_num_map)
+
+    print('**************** num_to_rne_map ****************')
+    num_to_rne_map = ky.num_to_rne(rne_map)
+    print(num_to_rne_map)
+
+    print('**************** word_to_order ****************')
+    word_order = ky.word_to_order(data)
+    print(word_order)
+
+    print('**************** word_rne_map ****************')
+    word_to_rne_map = ky.word_to_rne(data)
+    print('rne_word_map')
+    print(word_to_rne_map)
+
+    print('**************** rne_word_map ****************')
+    rne_to_word_map = ky.rne_to_word(data)
+    print('rne_word_map')
+    print(rne_to_word_map)
+
+    dependency_list = ky.parse_dependency(
+        likelihood,
+        word_order,
+        word_to_rne_map,
+        rne_to_num_map,
+        num_to_rne_map,
+        rne_to_word_map,
+    )
+    print('dependency_list')
+    print(dependency_list)
+
+    print('################ eval arcs ################')
+    arc_tag_list = None
+    word_to_id = os.path.join(data_dir, 'word_to_id.pkl')
+    clf = os.path.join(data_dir, 'svc.pkl')
+    matrix = os.path.join(data_dir, 'matrix.pkl')
+    prediction_map = os.path.join(data_dir, 'prediction_map.pkl')
+
+    arc_tag_list = ky.evaluate_arcs(
+        dependency_list,
+        word_to_id,
+        clf,
+        matrix,
+        prediction_map,
+    )
+
+    print('dependency list')
+    print(dependency_list)
+
+    print('arc_tag_list')
+    print(arc_tag_list)
+
+    print('word_order')
+    print(word_order)
+    nodes = ['{ id: "' + str(w[0]) + '-' + str(w[1]) + '"}' for w in word_order]
+    print('nodes')
+    print(nodes)
+
+
+    links = ['{ source: "' + str(w[0]) + '", target: "' + str(w[1]) + '"}' for w in dependency_list]
+    print('links')
+    print(links)
+
+    return jsonify({
+        'status': 'OK',
+        'dependency': dependency_list,
+        'arc': list(arc_tag_list)
+    })
+
 
 
 if __name__ == '__main__':

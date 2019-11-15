@@ -2,5 +2,7 @@ flask
 flask-cors
 flask-httpauth
 numpy
+pandas
+scikit-learn
 pytest
 pytest-watch
