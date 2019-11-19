@@ -197,10 +197,31 @@ def eval_recipe_level():
     })
 
 
+@app.route('/select', methods=['POST'])
+def select_data():
+    input_dir = './build/dest'
+    if os.path.exists(input_dir) is False:
+        os.makedirs(input_dir)
+    data_list = os.listdir(input_dir)
+
+    return jsonify({
+        'status': 'OK',
+        'data': data_list
+    })
+
+
 @app.route('/read', methods=['POST'])
 def read_json():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
     input_dir = './build/dest'
-    input_file = 'test.json'
+    input_file = data['selectedData']
+    print('input_file : ', input_file)
     input_path = os.path.join(input_dir, input_file)
 
     with open(input_path, 'r', encoding='utf-8') as r:
@@ -223,8 +244,11 @@ def output_json():
     print(data)
     print(type(data))
 
+    from datetime import datetime
+    now = datetime.now()
+
     output_dir = './build/dest'
-    output_file = 'test.json'
+    output_file = now.strftime('%Y%m%d-%H%M%S') + '.json'
     if os.path.exists(output_dir) is False:
         os.makedirs(output_dir)
     output_path = os.path.join(output_dir, output_file)
