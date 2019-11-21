@@ -176,19 +176,23 @@ def eval_recipe_level():
     axis3_dict_std = float(count_heat / axis3_score_max) * 5.0
     axis4_dict_std = float(count_mix / axis4_score_max) * 5.0
     axis5_dict_std = float(count_cut / axis5_score_max) * 5.0
+    level_dict_std = max([axis1_dict_std, axis2_dict_std, axis3_dict_std,
+                          axis4_dict_std, axis5_dict_std])
 
     print('1', axis1_dict_std)
     print('2', axis2_dict_std)
     print('3', axis3_dict_std)
     print('4', axis4_dict_std)
     print('5', axis5_dict_std)
+    print('level', level_dict_std)
 
     recipe_level = [
-                    {"key": "食材", "target": axis1_dict_std, "mean": 1.954192546583851 },
-                    {"key": "文字数", "target": axis2_dict_std, "mean": 1.3047501045924113 },
-                    {"key": "加熱", "target": axis3_dict_std, "mean": 0.8819875776397513 },
-                    {"key": "混ぜる", "target": axis4_dict_std, "mean": 1.6247139588100672 },
-                    {"key": "切る", "target": axis5_dict_std, "mean": 1.2644188110026617 }
+                    {"key": "食材", "name": "ingredients", "target": axis1_dict_std, "mean": 1.954192546583851 },
+                    {"key": "文字数", "name": "senteces", "target": axis2_dict_std, "mean": 1.3047501045924113 },
+                    {"key": "加熱", "name": "heat", "target": axis3_dict_std, "mean": 0.8819875776397513 },
+                    {"key": "混ぜる", "name": "mix", "target": axis4_dict_std, "mean": 1.6247139588100672 },
+                    {"key": "切る", "name": "cut", "target": axis5_dict_std, "mean": 1.2644188110026617 },
+                    {"key": "レベル", "name": "level", "target": level_dict_std, "mean": 3 },
     ]
 
     return jsonify({
