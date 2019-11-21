@@ -252,7 +252,7 @@ def output_json():
     now = datetime.now()
 
     output_dir = './build/dest'
-    output_file = now.strftime('%Y%m%d-%H%M%S') + '.json'
+    output_file = data['recipeTitle'] + '.json'
     if os.path.exists(output_dir) is False:
         os.makedirs(output_dir)
     output_path = os.path.join(output_dir, output_file)
