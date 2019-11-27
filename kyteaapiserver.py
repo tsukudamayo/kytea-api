@@ -215,7 +215,7 @@ def select_data():
 
 
 @app.route('/read', methods=['POST'])
-def read_json():
+def read_result():
     data = request.get_data()
     data = data.decode('utf-8')
     data = json.loads(data)
@@ -240,16 +240,13 @@ def read_json():
 
 
 @app.route('/output', methods=['POST'])
-def output_json():
+def output_result():
     data = request.get_data()
     data = data.decode('utf-8')
     data = json.loads(data)
     data = data['data']
     print(data)
     print(type(data))
-
-    from datetime import datetime
-    now = datetime.now()
 
     output_dir = './build/dest'
     output_file = data['recipeTitle'] + '.json'
@@ -260,6 +257,51 @@ def output_json():
         json.dump(data, w, indent=4, ensure_ascii=False)
 
     return jsonify({'status': 'OK'})
+
+
+@app.route('/filelist', methods=['POST'])
+def collect_filelist():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
+    target_dir = os.path.join(
+        './build/dest', data
+    )
+
+    return jsonify({
+        'data': os.listdir(target_dir),
+        'status': 'OK'
+    })
+
+
+@app.route('/import', methods=['POST'])
+def import_data():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
+    target_file = os.path.join(
+        './build/dest',
+        data['selectedRecipeDataType'],
+        data['selectedRecipeDataTypeFile']
+    )
+
+    with open(target_file, 'r', encoding='utf-8') as r:
+        data = json.load(r)
+    print(data)
+    print(type(data))
+
+    return jsonify({
+        'status': 'OK',
+        'data': data,
+    })
 
 
 @app.route('/flowgraph', methods=['POST'])
