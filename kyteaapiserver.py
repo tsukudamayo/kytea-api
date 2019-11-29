@@ -187,13 +187,16 @@ def eval_recipe_level():
     print('level', level_dict_std)
 
     recipe_level = [
-                    {"key": "食材", "name": "ingredients", "target": axis1_dict_std, "mean": 1.954192546583851 },
-                    {"key": "文字数", "name": "senteces", "target": axis2_dict_std, "mean": 1.3047501045924113 },
-                    {"key": "加熱", "name": "heat", "target": axis3_dict_std, "mean": 0.8819875776397513 },
-                    {"key": "混ぜる", "name": "mix", "target": axis4_dict_std, "mean": 1.6247139588100672 },
-                    {"key": "切る", "name": "cut", "target": axis5_dict_std, "mean": 1.2644188110026617 },
-                    {"key": "レベル", "name": "level", "target": level_dict_std, "mean": 3 },
+                    {"key": "食材", "name": "ingredients", "target": axis1_dict_std, "count": count_ingredients },
+                    {"key": "文字数", "name": "senteces", "target": axis2_dict_std, "count": count_words },
+                    {"key": "加熱", "name": "heat", "target": axis3_dict_std, "count": count_heat },
+                    {"key": "混ぜる", "name": "mix", "target": axis4_dict_std, "count": count_mix },
+                    {"key": "切る", "name": "cut", "target": axis5_dict_std, "count": count_cut },
+                    {"key": "レベル", "name": "level", "target": level_dict_std, "count": 0 },
     ]
+
+    print('recipe_level')
+    print(recipe_level)
 
     return jsonify({
         'status': 'OK',
@@ -269,7 +272,7 @@ def collect_filelist():
     print(type(data))
 
     target_dir = os.path.join(
-        './build/dest', data
+        './build/import', data
     )
 
     return jsonify({
@@ -288,7 +291,7 @@ def import_data():
     print(type(data))
 
     target_file = os.path.join(
-        './build/dest',
+        './build/import',
         data['selectedRecipeDataType'],
         data['selectedRecipeDataTypeFile']
     )
