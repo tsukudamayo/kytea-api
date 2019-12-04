@@ -53,8 +53,8 @@ def parse_dependency(likelihood, word_order, word_to_rne_map,
                     if d_word in order:
                         compare_dependency.append(order)
                         dependency_word = sorted(compare_dependency)[0][1]
-                        print('dependency_word')
-                        print(dependency_word)
+                        # print('dependency_word')
+                        # print(dependency_word)
                     else:
                         pass
         if len(compare_dependency) != 0:
@@ -122,15 +122,24 @@ def num_to_rne(filepath):
 
 
 def word_to_order(strings):
+    print('**************** word_to_order ****************')
     ordered_list = []
     count = 0
+    print('strings')
+    print(strings)
     lines = strings.split('\n')
     for line in lines:
         line = line.rstrip('\n')
         line = line.split(' ')
         for word in line:
-            word = word.split('/')
-            current_data = (count, word[0])
+            if word == '':
+                continue
+            if word == '/':
+                target_word = '/'
+            else:
+                word = word.split('/')
+                target_word = word[0]
+            current_data = (count, target_word)
             ordered_list.append(current_data)
             count += 1
 

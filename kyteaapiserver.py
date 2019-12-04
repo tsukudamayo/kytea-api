@@ -313,9 +313,12 @@ def flowgraph():
     data = request.get_data()
     data = data.decode('utf-8')
     data = json.loads(data)
-    data = data['data']
     print(data)
     print(type(data))
+    data = data['data']['nerText']
+    print(data)
+    print(type(data))
+
 
     # -----------------
     # output flowgraph
@@ -386,21 +389,21 @@ def flowgraph():
 
     print('word_order')
     print(word_order)
-    nodes = ['{ id: "' + str(w[0]) + '-' + str(w[1]) + '"}' for w in word_order]
+    nodes = [{'id': str(idx), 'name': str(w[0]) + '-' + str(w[1])}
+             for idx, w in enumerate(word_order)]
     print('nodes')
     print(nodes)
 
 
-    links = ['{ source: "' + str(w[0]) + '", target: "' + str(w[1]) + '"}' for w in dependency_list]
+    links = [{'source': str(w[0].split('-')[0]), 'target': str(w[1].split('-')[0]), 'label':  str(l)}
+             for w, l in zip(dependency_list, arc_tag_list)]
     print('links')
     print(links)
 
     return jsonify({
         'status': 'OK',
-        'dependency': dependency_list,
-        'arc': list(arc_tag_list)
+        'data': {'nodes': nodes, 'links': links}
     })
-
 
 
 if __name__ == '__main__':
