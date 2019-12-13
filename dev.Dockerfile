@@ -5,13 +5,26 @@ WORKDIR /kytea/app
 COPY . .
 RUN apt-get update \
     && apt-get -y install emacs \
+    llvm \
+    clang \
+    libclang-dev \
+    elpa-irony \
     && git clone https://github.com/tsukudamayo/dotfiles.git \
     && cp -r ./dotfiles/linux/.emacs.d ~/ \
-    && cp -r ./dotfiles/.fonts ~/
+    && cp -r ./dotfiles/.fonts ~/ \
+    && wget https://github.com/Kitware/CMake/releases/download/v3.16.1/cmake-3.16.1.tar.gz \ 
+    && tar xvf cmake-3.16.1.tar.gz \
+    && rm cmake-3.16.1.tar.gz \
 
 RUN pip install -r requirements.txt \
     && wget http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz \
     && tar xzf kytea-0.4.7.tar.gz
+
+WORKDIR /kytea/app/cmake-3.16.1
+RUN ./bootstrap && make && make install
+
+WORKDIR /kytea/app
+RUN rm -rf cmake-3.16.1
 
 WORKDIR kytea-0.4.7
 
