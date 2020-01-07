@@ -3,3 +3,5 @@ kytea-0.4.7/
 kytea-0.4.7.tar.gz
 build/
 __pycache__/
+import_data/
+dest/

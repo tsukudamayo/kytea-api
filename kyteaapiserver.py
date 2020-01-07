@@ -253,7 +253,7 @@ def output_result():
     print(data)
     print(type(data))
 
-    output_dir = './build/dest'
+    output_dir = './dest'
     output_file = data['recipeTitle'] + '.json'
     if os.path.exists(output_dir) is False:
         os.makedirs(output_dir)
@@ -300,7 +300,7 @@ def collect_filelist():
     print(type(data))
 
     target_dir = os.path.join(
-        './build/import', data
+        './import_data', data
     )
 
     return jsonify({
@@ -319,7 +319,7 @@ def import_data():
     print(type(data))
 
     target_file = os.path.join(
-        './build/import',
+        './import_data',
         data['selectedRecipeDataType'],
         data['selectedRecipeDataTypeFile']
     )
