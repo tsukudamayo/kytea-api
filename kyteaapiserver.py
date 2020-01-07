@@ -4,6 +4,7 @@ from flask_httpauth import HTTPBasicAuth
 
 import os
 import json
+import shutil
 
 import pandas as pd
 
@@ -23,6 +24,7 @@ else:
     _KYTEA_PATH = 'kytea'
 
 _TIME_PARAMS = './action_time/orangepage/action_time.json'
+_TIME_PARAMS_MASTER = './action_time/orangepage/action_time_master.json'
 _ACTIONS_CATEGORY_DIR = './action_category/orangepage'
 _REFERENCE_DIR = './num_of_params'
 
@@ -258,6 +260,32 @@ def output_result():
     output_path = os.path.join(output_dir, output_file)
     with open(output_path, 'w', encoding='utf-8') as w:
         json.dump(data, w, indent=4, ensure_ascii=False)
+
+    return jsonify({'status': 'OK'})
+
+
+@app.route('/attachac', methods=['POST'])
+def output_attach_action():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    data = {d['action']: d['time'] for d in data}
+    print(data)
+    print(type(data))
+
+    output_path = _TIME_PARAMS
+    with open(output_path, 'w', encoding='utf-8') as w:
+        json.dump(data, w, indent=4, ensure_ascii=False)
+
+    return jsonify({'status': 'OK'})
+
+
+@app.route('/resetparams',  methods=['POST'])
+def reset_action_params():
+    src = _TIME_PARAMS_MASTER
+    dst = _TIME_PARAMS
+    shutil.copy2(src, dst)
 
     return jsonify({'status': 'OK'})
 
