@@ -208,7 +208,8 @@ def eval_recipe_level():
 
 @app.route('/select', methods=['POST'])
 def select_data():
-    input_dir = './build/dest'
+    # input_dir = './build/dest'
+    input_dir = './import_data'
     if os.path.exists(input_dir) is False:
         os.makedirs(input_dir)
     data_list = os.listdir(input_dir)
@@ -242,52 +243,6 @@ def read_result():
         'status': 'OK',
         'data': data,
     })
-
-
-@app.route('/output', methods=['POST'])
-def output_result():
-    data = request.get_data()
-    data = data.decode('utf-8')
-    data = json.loads(data)
-    data = data['data']
-    print(data)
-    print(type(data))
-
-    output_dir = './dest'
-    output_file = data['recipeTitle'] + '.json'
-    if os.path.exists(output_dir) is False:
-        os.makedirs(output_dir)
-    output_path = os.path.join(output_dir, output_file)
-    with open(output_path, 'w', encoding='utf-8') as w:
-        json.dump(data, w, indent=4, ensure_ascii=False)
-
-    return jsonify({'status': 'OK'})
-
-
-@app.route('/attachac', methods=['POST'])
-def output_attach_action():
-    data = request.get_data()
-    data = data.decode('utf-8')
-    data = json.loads(data)
-    data = data['data']
-    data = {d['action']: d['time'] for d in data}
-    print(data)
-    print(type(data))
-
-    output_path = _TIME_PARAMS
-    with open(output_path, 'w', encoding='utf-8') as w:
-        json.dump(data, w, indent=4, ensure_ascii=False)
-
-    return jsonify({'status': 'OK'})
-
-
-@app.route('/resetparams',  methods=['POST'])
-def reset_action_params():
-    src = _TIME_PARAMS_MASTER
-    dst = _TIME_PARAMS
-    shutil.copy2(src, dst)
-
-    return jsonify({'status': 'OK'})
 
 
 @app.route('/filelist', methods=['POST'])
@@ -333,6 +288,66 @@ def import_data():
         'status': 'OK',
         'data': data,
     })
+
+
+@app.route('/output', methods=['POST'])
+def output_result():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    print(data)
+    print(type(data))
+
+    output_dir = './import_data'
+    ref_name = data['sourceRefference']
+    dst_dir = os.path.join(output_dir, ref_name)
+    output_file = data['title'] + '.json'
+    if os.path.exists(dst_dir) is False:
+        os.makedirs(dst_dir)
+    output_path = os.path.join(dst_dir, output_file)
+    data['ingredients'] = parse_ingredients_strings(data['ingredients'])
+    print('data["ingredients"] : ', data['ingredients'])
+    print('data : ', data)
+    with open(output_path, 'w', encoding='utf-8') as w:
+        json.dump(data, w, indent=4, ensure_ascii=False)
+
+    return jsonify({'status': 'OK'})
+
+
+def parse_ingredients_strings(strings: str) ->  dict:
+    strip_strings = strings.split('\n')
+    print('string_strings : ', strip_strings)
+    key_value = {s.split('\u3000')[0]: s.split('\u3000')[1] for s in strip_strings if s}
+
+    print('key_value : ', key_value)
+    return key_value
+    
+
+@app.route('/attachac', methods=['POST'])
+def output_attach_action():
+    data = request.get_data()
+    data = data.decode('utf-8')
+    data = json.loads(data)
+    data = data['data']
+    data = {d['action']: d['time'] for d in data}
+    print(data)
+    print(type(data))
+
+    output_path = _TIME_PARAMS
+    with open(output_path, 'w', encoding='utf-8') as w:
+        json.dump(data, w, indent=4, ensure_ascii=False)
+
+    return jsonify({'status': 'OK'})
+
+
+@app.route('/resetparams',  methods=['POST'])
+def reset_action_params():
+    src = _TIME_PARAMS_MASTER
+    dst = _TIME_PARAMS
+    shutil.copy2(src, dst)
+
+    return jsonify({'status': 'OK'})
 
 
 @app.route('/flowgraph', methods=['POST'])
