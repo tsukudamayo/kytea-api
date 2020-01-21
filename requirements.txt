@@ -6,3 +6,4 @@ pandas
 scikit-learn==0.20.2
 pytest
 pytest-watch
+requests
