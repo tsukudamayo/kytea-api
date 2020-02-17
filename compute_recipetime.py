@@ -8,7 +8,7 @@ from collections import Counter
 
 def summation_time(wakati_array: List, time_params: dict) -> int:
     target = [time_params[n] for n in wakati_array if n in time_params]
-    return reduce(add, target)
+    return reduce(add, target, 1)
 
 
 def split_tag(tag_word):
