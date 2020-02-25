@@ -9,6 +9,7 @@ import requests
 
 
 _SRC_DIR = './import_data/betterhome/'
+_POST_URL = 'http://192.168.1.137:50000/ner'
 
 
 def eval_time(time_label, summation_time):
@@ -61,13 +62,13 @@ def main():
         print('data : ', data)
         print('title : ', title)
         print('recipe : ', recipe)
-        res = requests.post('http://192.168.1.137:5000/ner', data=json.dumps({'data': recipe}))
+        res = requests.post(_POST_URL + '/ner', data=json.dumps({'data': recipe}))
         morph = res.json()
         print('response : ', morph)
         ner = morph['data']
         wakati = morph['wakati']
         time_res = requests.post(
-            'http://192.168.1.137:5000/time',
+            _POST_URL + '/time',
             data=json.dumps({'data': [ner, wakati]})
         )
         time_res = time_res.json()
