@@ -9,16 +9,16 @@ from collections import Counter
 def summation_time(wakati_array: List, time_params: dict) -> int:
     target = [time_params[n] for n in wakati_array if n in time_params]
 
-    return adjust_time_by_paramter(target)
+    return adjust_time_by_paramter(reduce(add, target, 0))
     # return reduce(add, time)
 
 
 def adjust_time_by_paramter(time: int) -> int:
 
     if time > 5:
-        return reduce(add, time)
+        return time
     else:
-        return reduce(add, time, 5)
+        return time + 5
 
 
 def split_tag(tag_word):
